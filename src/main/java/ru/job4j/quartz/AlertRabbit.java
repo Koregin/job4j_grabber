@@ -16,8 +16,7 @@ import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit {
 
-    private static Connection getConnection() throws Exception {
-        Properties config = readParams();
+    private static Connection getConnection(Properties config) throws Exception {
         Class.forName(config.getProperty("driver-class-name"));
         return DriverManager.getConnection(
                 config.getProperty("url"),
@@ -26,7 +25,8 @@ public class AlertRabbit {
     }
 
     public static void main(String[] args) {
-        try (Connection connection = getConnection()) {
+        Properties config = readParams();
+        try (Connection connection = getConnection(config)) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
@@ -35,7 +35,7 @@ public class AlertRabbit {
                     .usingJobData(data)
                     .build();
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(Integer.parseInt(readParams().getProperty("rabbit.interval")))
+                    .withIntervalInSeconds(Integer.parseInt(config.getProperty("rabbit.interval")))
                     .repeatForever();
             Trigger trigger = newTrigger()
                     .startNow()
