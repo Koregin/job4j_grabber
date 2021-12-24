@@ -5,9 +5,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -28,16 +32,18 @@ public class SqlRuDateTimeParser implements DateTimeParser {
             entry("дек", "12")
     );
 
+    private static final String DATEFORMAT = "d M y, H:m";
+
     @Override
-    public LocalDateTime parse(String parse) {
+    public LocalDateTime parse(String parse) throws ParseException {
         if (parse.contains("сегодня")) {
             parse = parse.replace("сегодня", LocalDate.now().format(DateTimeFormatter.ofPattern("d M y")));
         } else if (parse.contains("вчера")) {
             parse = parse.replace("вчера", LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("d M y")));
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d M y, H:m");
-        LocalDateTime.parse(monthConvert(parse), formatter);
-        return LocalDateTime.parse(monthConvert(parse), formatter);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATEFORMAT);
+        Date date = simpleDateFormat.parse(monthConvert(parse));
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
     private static String monthConvert(String dateTime) {
