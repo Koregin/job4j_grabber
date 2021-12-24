@@ -4,6 +4,10 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 import static org.quartz.JobBuilder.*;
@@ -11,11 +15,25 @@ import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit {
+
+    private static Connection getConnection() throws Exception {
+        Properties config = readParams();
+        Class.forName(config.getProperty("driver-class-name"));
+        return DriverManager.getConnection(
+                config.getProperty("url"),
+                config.getProperty("username"),
+                config.getProperty("password"));
+    }
+
     public static void main(String[] args) {
-        try {
+        try (Connection connection = getConnection()) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
-            JobDetail job = newJob(Rabbit.class).build();
+            JobDataMap data = new JobDataMap();
+            data.put("connection", connection);
+            JobDetail job = newJob(Rabbit.class)
+                    .usingJobData(data)
+                    .build();
             SimpleScheduleBuilder times = simpleSchedule()
                     .withIntervalInSeconds(Integer.parseInt(readParams().getProperty("rabbit.interval")))
                     .repeatForever();
@@ -24,15 +42,29 @@ public class AlertRabbit {
                     .withSchedule(times)
                     .build();
             scheduler.scheduleJob(job, trigger);
-        } catch (SchedulerException se) {
-            se.printStackTrace();
+            Thread.sleep(10000);
+            scheduler.shutdown();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public static class Rabbit implements Job {
+
+        public Rabbit() {
+            System.out.println(hashCode());
+        }
+
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             System.out.println("Rabbit runs here ...");
+            Connection cn = (Connection) context.getJobDetail().getJobDataMap().get("connection");
+            try (PreparedStatement ps = cn.prepareStatement("insert into rabbit(created_date) values(?)")) {
+                ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                ps.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
