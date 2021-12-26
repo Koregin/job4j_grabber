@@ -5,6 +5,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
         for (int i = 1; i <= 5; i++) {
@@ -18,5 +22,15 @@ public class SqlRuParse {
                 System.out.println(href.text());
             }
         }
+    }
+
+    public static List<String> getPost(String link) throws IOException {
+        List<String> postInfo = new ArrayList<>();
+        Document doc = Jsoup.connect(link).get();
+        Elements body = doc.select(".msgBody");
+        Elements footer = doc.select(".msgFooter");
+        postInfo.add(body.get(1).parent().child(1).text());
+        postInfo.add(footer.get(0).parent().child(0).text().split("\\[")[0].trim());
+        return postInfo;
     }
 }
