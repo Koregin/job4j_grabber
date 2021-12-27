@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 
 public class SqlRuParse {
+
     public static void main(String[] args) throws Exception {
         for (int i = 1; i <= 5; i++) {
             Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%d", i)).get();
@@ -26,12 +27,11 @@ public class SqlRuParse {
         }
     }
 
-    public static Post getPost(String link) throws IOException, ParseException {
+    public static Post detail(String link) throws IOException, ParseException {
         Document doc = Jsoup.connect(link).get();
-        Elements header = doc.select(".messageHeader");
         Elements body = doc.select(".msgBody");
         Elements footer = doc.select(".msgFooter");
-        String title = header.get(0).parent().child(0).text().replace("[new]", "").trim();
+        String title = doc.select(".messageHeader").get(0).ownText();
         String description = body.get(1).parent().child(1).text();
         String dataString = footer.get(0).parent().child(0).text().split("\\[")[0].trim();
         SqlRuDateTimeParser dataParser = new SqlRuDateTimeParser();
