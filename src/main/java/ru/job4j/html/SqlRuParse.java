@@ -5,13 +5,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.job4j.grabber.Post;
+import ru.job4j.grabber.utils.DateTimeParser;
 import ru.job4j.grabber.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SqlRuParse {
+    private final DateTimeParser dateTimeParser;
+
+    public SqlRuParse(DateTimeParser dateTimeParser) {
+        this.dateTimeParser = dateTimeParser;
+    }
+
 
     public static void main(String[] args) throws Exception {
         for (int i = 1; i <= 5; i++) {
@@ -25,6 +34,17 @@ public class SqlRuParse {
                 System.out.println(href.text());
             }
         }
+    }
+
+    public List<Post> list(String link) throws IOException, ParseException {
+        List<Post> posts = new ArrayList<>();
+        Document doc = Jsoup.connect(link).get();
+        Elements row = doc.select(".postslisttopic");
+        for (Element td : row) {
+            Element href = td.child(0);
+            posts.add(detail(href.attr("href")));
+        }
+        return posts;
     }
 
     public static Post detail(String link) throws IOException, ParseException {
