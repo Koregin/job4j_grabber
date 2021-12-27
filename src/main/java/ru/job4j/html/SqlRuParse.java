@@ -31,7 +31,7 @@ public class SqlRuParse {
         Elements header = doc.select(".messageHeader");
         Elements body = doc.select(".msgBody");
         Elements footer = doc.select(".msgFooter");
-        String title = header.get(0).parent().child(0).text();
+        String title = header.get(0).parent().child(0).text().replace("[new]", "").trim();
         String description = body.get(1).parent().child(1).text();
         String dataString = footer.get(0).parent().child(0).text().split("\\[")[0].trim();
         SqlRuDateTimeParser dataParser = new SqlRuDateTimeParser();
