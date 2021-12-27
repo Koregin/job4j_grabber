@@ -49,11 +49,9 @@ public class SqlRuParse {
 
     public static Post detail(String link) throws IOException, ParseException {
         Document doc = Jsoup.connect(link).get();
-        Elements body = doc.select(".msgBody");
-        Elements footer = doc.select(".msgFooter");
         String title = doc.select(".messageHeader").get(0).ownText();
-        String description = body.get(1).parent().child(1).text();
-        String dataString = footer.get(0).parent().child(0).text().split("\\[")[0].trim();
+        String description = doc.select(".msgBody").get(1).text();
+        String dataString = doc.select(".msgFooter").get(0).text();
         SqlRuDateTimeParser dataParser = new SqlRuDateTimeParser();
         LocalDateTime dataCreated = dataParser.parse(dataString);
         return new Post(title, link, description, dataCreated);
