@@ -21,7 +21,6 @@ public class SqlRuParse {
         this.dateTimeParser = dateTimeParser;
     }
 
-
     public static void main(String[] args) throws Exception {
         SqlRuParse sqlRuParse = new SqlRuParse(new SqlRuDateTimeParser());
         List<Post> postList = sqlRuParse.list("https://www.sql.ru/forum/job-offers");
