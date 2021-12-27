@@ -23,37 +23,31 @@ public class SqlRuParse {
 
 
     public static void main(String[] args) throws Exception {
-        for (int i = 1; i <= 5; i++) {
-            Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%d", i)).get();
-            Elements row = doc.select(".postslisttopic");
-            for (Element td : row) {
-                Element href = td.child(0);
-                Element parent = td.parent();
-                System.out.println(parent.child(5).text());
-                System.out.println(href.attr("href"));
-                System.out.println(href.text());
-            }
-        }
+        SqlRuParse sqlRuParse = new SqlRuParse(new SqlRuDateTimeParser());
+        List<Post> postList = sqlRuParse.list("https://www.sql.ru/forum/job-offers");
     }
 
     public List<Post> list(String link) throws IOException, ParseException {
         List<Post> posts = new ArrayList<>();
-        Document doc = Jsoup.connect(link).get();
-        Elements row = doc.select(".postslisttopic");
-        for (Element td : row) {
-            Element href = td.child(0);
-            posts.add(detail(href.attr("href")));
+        for (int i = 1; i <= 5; i++) {
+            Document doc = Jsoup.connect(String.format(link + "/%d", i)).get();
+            Elements row = doc.select(".postslisttopic");
+            for (Element td : row) {
+                Element href = td.child(0);
+                if (href.text().toLowerCase().contains("java") && !href.text().toLowerCase().contains("javascript")) {
+                    posts.add(detail(href.attr("href")));
+                }
+            }
         }
         return posts;
     }
 
-    public static Post detail(String link) throws IOException, ParseException {
+    public Post detail(String link) throws IOException, ParseException {
         Document doc = Jsoup.connect(link).get();
         String title = doc.select(".messageHeader").get(0).ownText();
         String description = doc.select(".msgBody").get(1).text();
         String dataString = doc.select(".msgFooter").get(0).text();
-        SqlRuDateTimeParser dataParser = new SqlRuDateTimeParser();
-        LocalDateTime dataCreated = dataParser.parse(dataString);
+        LocalDateTime dataCreated = dateTimeParser.parse(dataString);
         return new Post(title, link, description, dataCreated);
     }
 }
