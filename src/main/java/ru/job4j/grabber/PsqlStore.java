@@ -15,7 +15,7 @@ public class PsqlStore implements Store, AutoCloseable {
 
     private static Properties readParams() {
         Properties config = new Properties();
-        try (InputStream in = PsqlStore.class.getClassLoader().getResourceAsStream("grabber.properties")) {
+        try (InputStream in = PsqlStore.class.getClassLoader().getResourceAsStream("app.properties")) {
             config.load(in);
         } catch (Exception e) {
             e.printStackTrace();
