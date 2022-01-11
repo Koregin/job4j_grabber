@@ -15,8 +15,8 @@ public abstract class AbstractCache<K, V> {
     public V get(K key) {
         V value = cache.getOrDefault(key, new SoftReference<V>(null)).get();
         if (value == null) {
-            System.out.println("File not found in the cache. Load file to the cache");
             value = load(key);
+            put(key, value);
         }
         return value;
     }
