@@ -1,5 +1,7 @@
 package ru.job4j.cache;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 /**
@@ -11,15 +13,40 @@ import java.util.Scanner;
  */
 
 public class Emulator {
+    private static DirFileCache dirFileCache = null;
 
     private static String readInput() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
+    private static boolean checkPath(String path) {
+        boolean result = true;
+        if (!Files.exists(Path.of(path))) {
+            System.out.printf("Файл %s не найден%s", path, System.lineSeparator());
+            result = false;
+        }
+        return result;
+    }
+
+    private static void fileAction(Integer action) {
+        System.out.println("Введите название файла: ");
+        String file = readInput();
+        if (dirFileCache != null) {
+            if (checkPath(dirFileCache.getCachingDir() + file)) {
+                if (action == 2) {
+                    dirFileCache.load(file);
+                } else if (action == 3) {
+                    System.out.println(dirFileCache.get(file));
+                }
+            }
+        } else {
+            System.out.println("Не введена директория для кэширования");
+        }
+    }
+
     public static void main(String[] args) {
         boolean run = true;
-        DirFileCache dirFileCache = null;
         String dirForCache;
         while (run) {
             System.out.println("Menu:");
@@ -32,25 +59,15 @@ public class Emulator {
             if (select == 1) {
                 System.out.println("Введите директорию: ");
                 dirForCache = readInput();
-                dirFileCache = new DirFileCache(dirForCache);
+                if (checkPath(dirForCache)) {
+                    dirFileCache = new DirFileCache(dirForCache);
+                }
             }
             if (select == 2) {
-                System.out.println("Введите нзвание файла: ");
-                String file = readInput();
-                if (dirFileCache != null) {
-                    dirFileCache.load(file);
-                } else {
-                    System.out.println("Не введена директория для кэширования");
-                }
+                fileAction(select);
             }
             if (select == 3) {
-                System.out.println("Введите нзвание файла: ");
-                String file = readInput();
-                if (dirFileCache != null) {
-                    System.out.println(dirFileCache.get(file));
-                } else {
-                    System.out.println("Не введена директория для кэширования");
-                }
+                fileAction(select);
             }
             if (select == 4) {
                 run = false;
