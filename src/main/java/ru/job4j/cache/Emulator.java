@@ -54,6 +54,7 @@ public class Emulator {
             System.out.println("2. Загрузить файл в кэш");
             System.out.println("3. Получить содержимое файла из кэша");
             System.out.println("4. Выход");
+            System.out.println(DirFileCache.lookupLoadCalls.get());
             Scanner scanner = new Scanner(System.in);
             int select = Integer.parseInt(scanner.nextLine());
             if (select == 1) {
