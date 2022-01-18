@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 public class CinemaTest {
 
+    /*
     @Test
     public void whenBuy() {
         Account account = new AccountCinema();
@@ -53,4 +54,5 @@ public class CinemaTest {
         cinema.add(session3D);
         assertThat(sessions, is(cinema.find(session -> true)));
     }
+     */
 }
