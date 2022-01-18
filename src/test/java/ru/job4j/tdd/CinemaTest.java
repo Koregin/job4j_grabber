@@ -14,7 +14,7 @@ public class CinemaTest {
     public void whenBuy() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
-        Calendar date = new Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
         Ticket ticket = cinema.buy(account, 1, 1, date);
         assertThat(ticket, is(new Ticket3D()));
@@ -39,7 +39,7 @@ public class CinemaTest {
     public void whenNoTicket() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
-        Calendar date = new Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
         Ticket ticket = cinema.buy(account, 1, 1, date);
         assertNull(ticket);
