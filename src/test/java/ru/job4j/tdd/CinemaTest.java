@@ -1,8 +1,7 @@
 package ru.job4j.tdd;
 
 import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -11,9 +10,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 public class CinemaTest {
-
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Ignore
     public void whenBuy() {
@@ -50,9 +46,8 @@ public class CinemaTest {
     }
 
     @Ignore
-    public void invalidPlace() {
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("This place is invalid");
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidPlace() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
@@ -61,9 +56,8 @@ public class CinemaTest {
     }
 
     @Ignore
-    public void invalidDate() {
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("Date is invalid");
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidDate() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
@@ -71,13 +65,13 @@ public class CinemaTest {
     }
 
     @Ignore
+    @Test(expected = IllegalArgumentException.class)
     public  void whenPlaceIsBusy() {
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("This place is busy");
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
-        cinema.buy(account, 1, 1, date);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        Ticket dublTicket = cinema.buy(account, 1, 1, date);
     }
 }
