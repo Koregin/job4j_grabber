@@ -1,6 +1,8 @@
 package ru.job4j.template;
 
-import org.junit.Test;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 import java.util.Map;
 
@@ -9,8 +11,10 @@ import static org.junit.Assert.*;
 
 public class GeneratorTest {
 
-    /*
-    @Test
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Ignore
     public void whenTemplateAndMapWithTwoKeys() {
         String template = "I am a ${name}, Who are ${subject}?";
         Map<String, String> map = Map.of(
@@ -20,16 +24,20 @@ public class GeneratorTest {
         assertThat("I am a Petr Arsentev, Who are you?", is(generator.produce(template, map)));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Ignore
     public void whenTemplateWithKeysWhichMapNotContains() {
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("No keys in map");
         String template = "I am a ${name}, Who are ${subject}?";
         Map<String, String> map = Map.of("name", "Petr Arsentev");
         Generator generator = new StringGenerator();
         generator.produce(template, map);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Ignore
     public void whenMapHasExcessKeys() {
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("Map has excess keys");
         String template = "I am a ${name}, Who are ${subject}?";
         Map<String, String> map = Map.of(
                 "name", "Petr Arsentev",
@@ -38,5 +46,4 @@ public class GeneratorTest {
         Generator generator = new StringGenerator();
         generator.produce(template, map);
     }
-    */
 }
