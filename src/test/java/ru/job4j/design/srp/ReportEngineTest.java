@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static ru.job4j.design.srp.Constants.*;
 
 public class ReportEngineTest {
 
@@ -20,8 +21,8 @@ public class ReportEngineTest {
                 .append("Name; Hired; Fired; Salary;")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
-                .append(engine.SDF.format(worker.getHired().getTime())).append(";")
-                .append(engine.SDF.format(worker.getFired().getTime())).append(";")
+                .append(SDF.format(worker.getHired().getTime())).append(";")
+                .append(SDF.format(worker.getFired().getTime())).append(";")
                 .append(worker.getSalary()).append(";")
                 .append(System.lineSeparator());
         System.out.println(engine.generate(em -> true));
@@ -38,8 +39,8 @@ public class ReportEngineTest {
         StringBuilder expect = new StringBuilder()
                 .append("<table><tbody><tr><td>Name</td><td>Hired</td><td>Fired</td><td>Salary</td></tr><tr>")
                 .append("<td>").append(worker.getName()).append("</td>")
-                .append("<td>").append(engine.SDF.format(worker.getHired().getTime())).append("</td>")
-                .append("<td>").append(engine.SDF.format(worker.getFired().getTime())).append("</td>")
+                .append("<td>").append(SDF.format(worker.getHired().getTime())).append("</td>")
+                .append("<td>").append(SDF.format(worker.getFired().getTime())).append("</td>")
                 .append("<td>").append(worker.getSalary()).append("</td></tr></tbody></table>");
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
@@ -56,8 +57,8 @@ public class ReportEngineTest {
                 .append("Name; Hired; Fired; Salary;")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
-                .append(engine.SDF.format(worker.getHired().getTime())).append(";")
-                .append(engine.SDF.format(worker.getFired().getTime())).append(";")
+                .append(SDF.format(worker.getHired().getTime())).append(";")
+                .append(SDF.format(worker.getFired().getTime())).append(";")
                 .append(worker.getSalary() * uStoRUB).append(";")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));

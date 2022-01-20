@@ -1,11 +1,11 @@
 package ru.job4j.design.srp;
 
 import java.util.function.Predicate;
+import static ru.job4j.design.srp.Constants.*;
 
 public class ReportAccountingEngine implements Report {
 
     private Store store;
-    private static final double USTORUB = 75.5;
 
     public ReportAccountingEngine(Store store) {
         this.store = store;
