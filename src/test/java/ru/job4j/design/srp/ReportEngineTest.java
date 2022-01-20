@@ -2,7 +2,6 @@ package ru.job4j.design.srp;
 
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -17,13 +16,12 @@ public class ReportEngineTest {
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
         Report engine = new ReportEngine(store);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyy MMM dd");
         StringBuilder expect = new StringBuilder()
                 .append("Name; Hired; Fired; Salary;")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
-                .append(sdf.format(worker.getHired().getTime())).append(";")
-                .append(sdf.format(worker.getFired().getTime())).append(";")
+                .append(engine.SDF.format(worker.getHired().getTime())).append(";")
+                .append(engine.SDF.format(worker.getFired().getTime())).append(";")
                 .append(worker.getSalary()).append(";")
                 .append(System.lineSeparator());
         System.out.println(engine.generate(em -> true));
@@ -37,12 +35,11 @@ public class ReportEngineTest {
         Employee worker = new Employee("Petr", now, now, 1000);
         store.add(worker);
         Report engine = new ReportProgrammerEngine(store);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyy MMM dd");
         StringBuilder expect = new StringBuilder()
                 .append("<table><tbody><tr><td>Name</td><td>Hired</td><td>Fired</td><td>Salary</td></tr><tr>")
                 .append("<td>").append(worker.getName()).append("</td>")
-                .append("<td>").append(sdf.format(worker.getHired().getTime())).append("</td>")
-                .append("<td>").append(sdf.format(worker.getFired().getTime())).append("</td>")
+                .append("<td>").append(engine.SDF.format(worker.getHired().getTime())).append("</td>")
+                .append("<td>").append(engine.SDF.format(worker.getFired().getTime())).append("</td>")
                 .append("<td>").append(worker.getSalary()).append("</td></tr></tbody></table>");
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
@@ -55,13 +52,12 @@ public class ReportEngineTest {
         double uStoRUB = 75.5;
         store.add(worker);
         Report engine = new ReportAccountingEngine(store);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyy MMM dd");
         StringBuilder expect = new StringBuilder()
                 .append("Name; Hired; Fired; Salary;")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
-                .append(sdf.format(worker.getHired().getTime())).append(";")
-                .append(sdf.format(worker.getFired().getTime())).append(";")
+                .append(engine.SDF.format(worker.getHired().getTime())).append(";")
+                .append(engine.SDF.format(worker.getFired().getTime())).append(";")
                 .append(worker.getSalary() * uStoRUB).append(";")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
