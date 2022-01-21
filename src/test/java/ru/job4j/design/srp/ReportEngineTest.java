@@ -1,9 +1,7 @@
 package ru.job4j.design.srp;
 
 import org.junit.Test;
-
 import java.util.Calendar;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static ru.job4j.design.srp.Constants.*;
@@ -27,6 +25,57 @@ public class ReportEngineTest {
                 .append(System.lineSeparator());
         System.out.println(engine.generate(em -> true));
         assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenGeneratedXML() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        Employee worker2 = new Employee("Petr", now, now, 1000);
+        store.add(worker);
+        store.add(worker2);
+        Report engine = new ReportEngineXML(store);
+        String expect = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
+                + "<employees>\n"
+                + "    <employee name=\"" + worker.getName() + "\""
+                + " hired=\"" + SDF.format(worker.getHired().getTime()) + "\""
+                + " fired=\"" + SDF.format(worker.getFired().getTime()) + "\""
+                + " salary=\"" + worker.getSalary() + "\"/>\n"
+                + "    <employee name=\"" + worker2.getName() + "\""
+                + " hired=\"" + SDF.format(worker2.getHired().getTime()) + "\""
+                + " fired=\"" + SDF.format(worker2.getFired().getTime()) + "\""
+                + " salary=\"" + worker2.getSalary() + "\"/>\n"
+                + "</employees>\n";
+        System.out.println(engine.generate(em -> true));
+        assertThat(engine.generate(em -> true), is(expect));
+    }
+
+    @Test
+    public void whenGeneratedJSON() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        Employee worker2 = new Employee("Petr", now, now, 1000);
+        store.add(worker);
+        store.add(worker2);
+        Report engine = new ReportEngineJSON(store);
+        String expect = "["
+                        + "{"
+                        + "\"name\":\"" + worker.getName() + "\","
+                        + "\"hired\":\"" + SDF.format(worker.getHired().getTime()) + "\","
+                        + "\"fired\":\"" + SDF.format(worker.getFired().getTime()) + "\","
+                        + "\"salary\":" + worker.getSalary()
+                        + "},"
+                        + "{"
+                        + "\"name\":\"" + worker2.getName() + "\","
+                        + "\"hired\":\"" + SDF.format(worker2.getHired().getTime()) + "\","
+                        + "\"fired\":\"" + SDF.format(worker2.getFired().getTime()) + "\","
+                        + "\"salary\":" + worker2.getSalary()
+                        + "}"
+                    + "]";
+        System.out.println(engine.generate(em -> true));
+        assertThat(engine.generate(em -> true), is(expect));
     }
 
     @Test
@@ -64,29 +113,29 @@ public class ReportEngineTest {
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
 
-   @Test
-   public void whenRequirementsForHR() {
-       MemStore store = new MemStore();
-       Calendar now = Calendar.getInstance();
-       Employee worker1 = new Employee("Ivan", now, now, 100);
-       Employee worker2 = new Employee("Petr", now, now, 1000);
-       Employee worker3 = new Employee("Evgeny", now, now, 5000);
-       store.add(worker1);
-       store.add(worker2);
-       store.add(worker3);
-       Report engine = new ReportHREngine(store);
-       StringBuilder expect = new StringBuilder()
-               .append("Name; Salary;")
-               .append(System.lineSeparator())
-               .append(worker3.getName()).append(";")
-               .append(worker3.getSalary()).append(";")
-               .append(System.lineSeparator())
-               .append(worker2.getName()).append(";")
-               .append(worker2.getSalary()).append(";")
-               .append(System.lineSeparator())
-               .append(worker1.getName()).append(";")
-               .append(worker1.getSalary()).append(";")
-               .append(System.lineSeparator());
-       assertThat(engine.generate(em -> true), is(expect.toString()));
-   }
+    @Test
+    public void whenRequirementsForHR() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker1 = new Employee("Ivan", now, now, 100);
+        Employee worker2 = new Employee("Petr", now, now, 1000);
+        Employee worker3 = new Employee("Evgeny", now, now, 5000);
+        store.add(worker1);
+        store.add(worker2);
+        store.add(worker3);
+        Report engine = new ReportHREngine(store);
+        StringBuilder expect = new StringBuilder()
+                .append("Name; Salary;")
+                .append(System.lineSeparator())
+                .append(worker3.getName()).append(";")
+                .append(worker3.getSalary()).append(";")
+                .append(System.lineSeparator())
+                .append(worker2.getName()).append(";")
+                .append(worker2.getSalary()).append(";")
+                .append(System.lineSeparator())
+                .append(worker1.getName()).append(";")
+                .append(worker1.getSalary()).append(";")
+                .append(System.lineSeparator());
+        assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
 }

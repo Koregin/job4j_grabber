@@ -1,13 +1,30 @@
 package ru.job4j.design.srp;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Calendar;
 import java.util.Objects;
 
+@XmlRootElement(name = "employee")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Employee {
+
+    @XmlAttribute
     private String name;
+
+    @XmlAttribute
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Calendar hired;
+
+    @XmlAttribute
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Calendar fired;
+
+    @XmlAttribute
     private double salary;
+
+    public Employee() {
+    }
 
     public Employee(String name, Calendar hired, Calendar fired, double salary) {
         this.name = name;
@@ -50,8 +67,12 @@ public class Employee {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Employee employee = (Employee) o;
         return Objects.equals(name, employee.name);
     }
