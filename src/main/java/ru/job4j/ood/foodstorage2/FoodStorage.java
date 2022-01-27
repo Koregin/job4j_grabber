@@ -20,15 +20,15 @@ public class FoodStorage {
             controlQuality.executeQuality(food);
         }
         System.out.println("Товары на складе");
-        for (Food food : warehouse.warehouse) {
+        for (Food food : warehouse.getWarehouse()) {
             System.out.println(food);
         }
         System.out.println("Товары в магазине");
-        for (Food food : shop.shop) {
+        for (Food food : shop.getShop()) {
             System.out.println(food);
         }
         System.out.println("Товары в мусорке");
-        for (Food food : trash.trash) {
+        for (Food food : trash.getTrash()) {
             System.out.println(food);
         }
     }

@@ -3,8 +3,12 @@ package ru.job4j.ood.foodstorage2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shop implements Store, Percent {
-    List<Food> shop = new ArrayList<>();
+public class Shop implements Store {
+    private List<Food> shop = new ArrayList<>();
+
+    public List<Food> getShop() {
+        return shop;
+    }
 
     @Override
     public boolean add(Food food) {
