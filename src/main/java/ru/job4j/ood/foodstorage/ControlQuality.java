@@ -18,9 +18,9 @@ public class ControlQuality {
         long storageTimeInMinutes = java.time.Duration.between(food.getCreateDate(), food.getExpiryDate()).toMinutes();
         long passedTimeInMinutes = java.time.Duration.between(food.getCreateDate(), FoodStorageDemo.CURRENTTIME).toMinutes();
         double storagePercentage = ((double) passedTimeInMinutes / storageTimeInMinutes) * 100;
-        if (storagePercentage <= 25) {
+        if (storagePercentage < 25) {
             strategy = new ToWarehouse(warehouse);
-        } else if (storagePercentage > 25 && storagePercentage < 75) {
+        } else if (storagePercentage >= 25 && storagePercentage < 75) {
             strategy = new ToShop(shop);
         } else if (storagePercentage > 75 && storagePercentage < 100) {
             food.setDiscount(50);
