@@ -7,7 +7,7 @@ public class Warehouse implements Store {
     private List<Food> warehouse = new ArrayList<>();
 
     public List<Food> getWarehouse() {
-        return warehouse;
+        return new ArrayList<>(warehouse);
     }
 
     @Override

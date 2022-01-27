@@ -7,7 +7,7 @@ public class Trash implements Store {
     private List<Food> trash = new ArrayList<>();
 
     public List<Food> getTrash() {
-        return trash;
+        return new ArrayList<>(trash);
     }
 
     @Override

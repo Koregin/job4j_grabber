@@ -7,7 +7,7 @@ public class Shop implements Store {
     private List<Food> shop = new ArrayList<>();
 
     public List<Food> getShop() {
-        return shop;
+        return new ArrayList<>(shop);
     }
 
     @Override
