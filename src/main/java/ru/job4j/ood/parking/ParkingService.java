@@ -19,11 +19,42 @@ public class ParkingService implements Parking {
 
     @Override
     public boolean carRegister(Vehicle vehicle) {
-        return false;
+        boolean result = false;
+        if (vehicle.getSize() == Car.CAR && carSpaces > 0) {
+            vehicles.add(vehicle);
+            carSpaces--;
+            result = true;
+        }
+        if (vehicle.getSize() != Car.CAR) {
+            if (truckSpaces > 0) {
+                vehicles.add(vehicle);
+                truckSpaces--;
+                result = true;
+            } else {
+                if (carSpaces >= vehicle.getSize()) {
+                    vehicles.add(vehicle);
+                    carSpaces -= vehicle.getSize();
+                    Truck truck = (Truck) vehicle;
+                    truck.setTruckOnCarPlace();
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 
     @Override
     public void carUnregister(Vehicle vehicle) {
-
+        vehicles.remove(vehicle);
+        if (vehicle.getSize() != Car.CAR) {
+            Truck truck = (Truck) vehicle;
+            if (!truck.isTruckOnCarPlace()) {
+                truckSpaces++;
+            } else {
+                carSpaces += vehicle.getSize();
+            }
+        } else {
+            carSpaces++;
+        }
     }
 }
