@@ -24,21 +24,18 @@ public class ParkingService implements Parking {
             vehicles.add(vehicle);
             carSpaces--;
             result = true;
-        }
-        if (vehicle.getSize() != Car.CAR) {
+        } else if (vehicle.getSize() != Car.CAR) {
             if (truckSpaces > 0) {
                 vehicles.add(vehicle);
                 truckSpaces--;
                 result = true;
-            } else {
-                if (carSpaces >= vehicle.getSize()) {
+            } else if (carSpaces >= vehicle.getSize()) {
                     vehicles.add(vehicle);
                     carSpaces -= vehicle.getSize();
                     Truck truck = (Truck) vehicle;
                     truck.setTruckOnCarPlace();
                     result = true;
                 }
-            }
         }
         return result;
     }
