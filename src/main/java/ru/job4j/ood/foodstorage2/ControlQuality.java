@@ -17,4 +17,16 @@ public class ControlQuality {
             }
         }
     }
+
+    public void resort() {
+        for (Store store : storages) {
+            for (Food food : store.getStore()) {
+                if (!store.accept(food)) {
+                    executeQuality(food);
+                    store.del(food);
+                    break;
+                }
+            }
+        }
+    }
 }

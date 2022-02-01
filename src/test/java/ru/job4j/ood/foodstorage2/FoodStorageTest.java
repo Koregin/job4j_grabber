@@ -17,14 +17,14 @@ public class FoodStorageTest {
     public void when25percentExpired() {
         Food food = new Food("avocado", LocalDateTime.now().minusDays(4), LocalDateTime.now().plusDays(14), 320.0, 0.0);
         controlQuality.executeQuality(food);
-        assertTrue(warehouse.getWarehouse().contains(food));
+        assertTrue(warehouse.getStore().contains(food));
     }
 
     @Test
     public void whenFoodExpiredBetween25and75percent() {
         Food food = new Food("orange", LocalDateTime.now().minusDays(7), LocalDateTime.now().plusDays(7), 130.0, 0.0);
         controlQuality.executeQuality(food);
-        assertTrue(shop.getShop().contains(food));
+        assertTrue(shop.getStore().contains(food));
     }
 
     @Test
@@ -34,13 +34,22 @@ public class FoodStorageTest {
         Food food = new Food("banana", createDate, expiredDate, 70.0, 0.0);
         Food foodAfterDiscount = new Food("banana", createDate, expiredDate, 35.0, 50.0);
         controlQuality.executeQuality(food);
-        assertTrue(shop.getShop().contains(foodAfterDiscount));
+        assertTrue(shop.getStore().contains(foodAfterDiscount));
     }
 
     @Test
     public void whenFoodIsExpired() {
         Food food = new Food("apple", LocalDateTime.now().minusDays(14), LocalDateTime.now().minusDays(1), 120.0, 0.0);
         controlQuality.executeQuality(food);
-        assertTrue(trash.getTrash().contains(food));
+        assertTrue(trash.getStore().contains(food));
+    }
+
+    @Test
+    public void whenFoodIsResortToOtherStore() {
+        Food food = new Food("avocado", LocalDateTime.now().minusDays(4), LocalDateTime.now().plusDays(14), 320.0, 0.0);
+        controlQuality.executeQuality(food);
+        food.setCreateDate(LocalDateTime.now().minusDays(45));
+        controlQuality.resort();
+        assertTrue(shop.getStore().contains(food));
     }
 }

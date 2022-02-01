@@ -43,6 +43,10 @@ public class Food {
         this.price = price - (price / 100.0 * discount);
     }
 
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
     @Override
     public String toString() {
         return "Food{"

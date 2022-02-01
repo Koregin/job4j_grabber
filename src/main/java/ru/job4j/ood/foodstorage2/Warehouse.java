@@ -6,13 +6,19 @@ import java.util.List;
 public class Warehouse implements Store {
     private List<Food> warehouse = new ArrayList<>();
 
-    public List<Food> getWarehouse() {
+    @Override
+    public List<Food> getStore() {
         return new ArrayList<>(warehouse);
     }
 
     @Override
     public boolean add(Food food) {
         return warehouse.add(food);
+    }
+
+    @Override
+    public boolean del(Food food) {
+        return warehouse.remove(food);
     }
 
     @Override

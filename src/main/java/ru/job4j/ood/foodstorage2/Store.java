@@ -1,6 +1,7 @@
 package ru.job4j.ood.foodstorage2;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface Store {
     default double getPercent(Food food) {
@@ -9,5 +10,8 @@ public interface Store {
         return ((double) passedTimeInMinutes / storageTimeInMinutes) * 100;
     }
     boolean add(Food food);
+    boolean del(Food food);
     boolean accept(Food food);
+    List<Food> getStore();
+
 }
