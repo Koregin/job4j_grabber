@@ -17,7 +17,9 @@ public class ControlQuality {
             }
         }
     }
-
+    /*
+    Заново перераспределяет продукты в хранилищах
+     */
     public void resort() {
         for (Store store : storages) {
             for (Food food : store.getStore()) {
