@@ -12,7 +12,7 @@ public interface Store {
 
     boolean add(Food food);
 
-    boolean removeAll();
+    void clear();
 
     boolean accept(Food food);
 

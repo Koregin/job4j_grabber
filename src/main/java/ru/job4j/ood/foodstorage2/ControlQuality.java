@@ -23,7 +23,7 @@ public class ControlQuality {
         List<Food> tempStorage = new ArrayList<>();
         for (Store store : storages) {
             tempStorage.addAll(store.getStore());
-            store.removeAll();
+            store.clear();
         }
         for (Food food : tempStorage) {
             executeQuality(food);
