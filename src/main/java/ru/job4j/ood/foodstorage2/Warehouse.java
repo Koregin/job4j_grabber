@@ -17,8 +17,8 @@ public class Warehouse implements Store {
     }
 
     @Override
-    public boolean del(Food food) {
-        return warehouse.remove(food);
+    public boolean removeAll() {
+        return warehouse.removeAll(warehouse);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.job4j.ood.foodstorage2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlQuality {
@@ -17,18 +18,15 @@ public class ControlQuality {
             }
         }
     }
-    /*
-    Заново перераспределяет продукты в хранилищах
-     */
+
     public void resort() {
+        List<Food> tempStorage = new ArrayList<>();
         for (Store store : storages) {
-            for (Food food : store.getStore()) {
-                if (!store.accept(food)) {
-                    executeQuality(food);
-                    store.del(food);
-                    break;
-                }
-            }
+            tempStorage.addAll(store.getStore());
+            store.removeAll();
+        }
+        for (Food food : tempStorage) {
+            executeQuality(food);
         }
     }
 }

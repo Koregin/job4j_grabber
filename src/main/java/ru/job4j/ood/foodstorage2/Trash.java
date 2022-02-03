@@ -17,8 +17,8 @@ public class Trash implements Store {
     }
 
     @Override
-    public boolean del(Food food) {
-        return trash.remove(food);
+    public boolean removeAll() {
+        return trash.removeAll(trash);
     }
 
     @Override
