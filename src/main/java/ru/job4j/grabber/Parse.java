@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface Parse {
     List<Post> list(String link) throws IOException, ParseException;
-    Post detail(String link) throws IOException, ParseException;
 }

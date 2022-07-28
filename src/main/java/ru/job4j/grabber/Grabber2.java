@@ -55,7 +55,7 @@ public class Grabber2 implements Grab {
         scheduler.scheduleJob(job, trigger);
     }
 
-    public static class GrabJob implements Job {
+    public static class GrabJob extends Grabber2 implements Job {
 
         @Override
         public void execute(JobExecutionContext context) {
@@ -63,9 +63,7 @@ public class Grabber2 implements Grab {
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
             try {
-                for (Post post: parse.list("https://vladimir.hh.ru/search/vacancy?area=1&employment=full&schedule=remote"
-                                        + "&search_field=name&clusters=true&no_magic=true&ored_clusters=true&items_on_page=20"
-                                        + "&order_by=publication_time&enable_snippets=true&search_period=7&text=Java&hhtmFrom=vacancy_search_list&page=")) {
+                for (Post post : parse.list("")) {
                     store.save(post);
                 }
             } catch (IOException | ParseException e) {
