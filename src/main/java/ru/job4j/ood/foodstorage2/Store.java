@@ -9,9 +9,13 @@ public interface Store {
         long passedTimeInMinutes = java.time.Duration.between(food.getCreateDate(), LocalDateTime.now()).toMinutes();
         return ((double) passedTimeInMinutes / storageTimeInMinutes) * 100;
     }
+
     boolean add(Food food);
-    boolean del(Food food);
+
+    void clear();
+
     boolean accept(Food food);
+
     List<Food> getStore();
 
 }

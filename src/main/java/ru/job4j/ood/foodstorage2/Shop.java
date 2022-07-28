@@ -17,8 +17,8 @@ public class Shop implements Store {
     }
 
     @Override
-    public boolean del(Food food) {
-        return shop.remove(food);
+    public void clear() {
+        shop.clear();
     }
 
     @Override
